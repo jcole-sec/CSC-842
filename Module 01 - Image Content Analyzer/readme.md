@@ -69,7 +69,7 @@ pip3 install -r requirements.txt
 
 help
 ```
-usage: image_analyzer.py [-h] [-d DIRECTORY] [-f FILE]
+usage: image_analyzer.py [-h] [-d DIRECTORY] [-f FILE] [-t | --text | --no-text]
 
 image_analyzer.py is a script which will query images within a given directory path for the presence of specified keywords.
 
@@ -81,6 +81,9 @@ options:
   -f FILE, --file FILE  The path to the keyword list file.
                         The keyword list file should contain one term per line.
                         Default value: [./keywords.txt]
+  -t, --text, --no-text
+                        Print text associated with OCR keyword matches.
+                        Default value: False (--no-text)
 
 Thanks for trying image_analyzer!
 ```
