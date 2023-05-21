@@ -43,7 +43,7 @@ def perform_ocr(image):
 
 def __main__():
     parser = argparse.ArgumentParser(
-        description ='image_analyzer.py is a Python script which will query images within a given directory path for the presence of specified keywords.',
+        description ='image_analyzer.py is a script which will query images within a given directory path for the presence of specified keywords.',
         formatter_class = RawTextHelpFormatter,
         epilog = 'Thanks for trying image_analyzer!\n ',
     )
