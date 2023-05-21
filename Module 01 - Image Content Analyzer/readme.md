@@ -40,6 +40,10 @@ Install Tesseract (Windows)
 pip3  install pytesseract
 ```
 
+## Usage
+
+
+
 ## Demonstration
 
 link to video here
