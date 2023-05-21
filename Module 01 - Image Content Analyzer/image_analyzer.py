@@ -1,6 +1,7 @@
 import os
 import argparse
 from argparse import RawTextHelpFormatter
+from pathlib import Path
 from PIL import Image
 import pytesseract          # https://pypi.org/project/pytesseract/
 import numpy as np
@@ -53,7 +54,9 @@ def __main__():
     args = parser.parse_args()
 
     keywords = parse_keywords(args.file)
-    image_list = get_images(args.directory)
+
+    srcdir = Path(args.directory)
+    image_list = get_images(srcdir)
 
     for image in image_list:
         try:
