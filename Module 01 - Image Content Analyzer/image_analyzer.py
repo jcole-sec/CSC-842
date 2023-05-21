@@ -1,16 +1,11 @@
 import os
+import argparse
 
 from PIL import Image
 import pytesseract          # https://pypi.org/project/pytesseract/
 import numpy as np
-import magic
+import magic                # python magic byte detection library
 
-"""
-for file in os.listdir(os.getcwd()):
-    print(file)
-"""
-
-srcdir = "C:\\Users\\fjall\\Downloads"
 
 """
 for r, d, f in os.walk(srcdir):
@@ -23,30 +18,53 @@ for r, d, f in os.walk(srcdir):
 
 def get_images(srcdir):
     image_files = []
-    for r, d, f in os.walk(srcdir):
-        for files in f:
-            srcfile = os.path.join(r, files)
+    excluded_extensions = ['.js', '.svg', '.mp4','.mov']
+    for r, d, files in os.walk(srcdir):
+        files = [os.path.join(r, f) for f in files]# if not f.lower().endswith(ext)]
+        for each in files:
+            #srcfile = os.path.join(r, each)
             try:
-                file_type = magic.from_file(srcfile)
-                if 'image' in file_type.lower():
-                    #print(file_type)
-                    image_files.append(srcfile)
+                for ext in excluded_extensions:
+                    if not each.endswith(ext):
+                        file_type = magic.from_file(each)
+                        if 'image' in file_type.lower() and not 'SVG' in file_type:
+                            #print(file_type)
+                            image_files.append(each)
             except:
-                print(f'[*] ERROR: {srcfile}')
+                print(f'[*] MAGIC Error on file: {each}')
     return image_files
 
+
 def perform_ocr(image):
-    pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
+    tesseract_path = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
     img1 = np.array(Image.open(image))
     text = pytesseract.image_to_string(img1)
     return text
 
+
 def __main__():
+    parser = argparse.ArgumentParser(description='This script will ...')
+    parser.add_argument('-d','--directory', help='directory path to scan', type=str, default=os.getcwd())
+    #parser.add_argument()
+    args = parser.parse_args()
+
+    srcdir = 'C:\\Users\\fjall\\Downloads'
+    
+
+    keywords = ['secret', 'username', 'password', 'credential', 'spider']
     image_list = get_images(srcdir)
     for image in image_list:
         try:
-            print(image)
-            perform_ocr(image)
+            image_text = perform_ocr(image)
+            if len(image_text) > 0:
+                for keyword in keywords:
+                    if keyword in image_text.lower():
+                        print(f'[+] Match found:\n keyword: {keyword}\n file: {image}\n text: {image_text.strip()}\n')
+            
         except:
-            print(f'[*] Error on file: {image}')
+            print(f'[*] OCR Error on file: {image}')
+            pass
+
+
 __main__()

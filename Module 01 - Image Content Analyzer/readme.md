@@ -11,13 +11,18 @@ Discovery Use Cases
 
 ## How?
 
+![Design](mod1_design.png)
+
 1. Identify file type based on extension and/or magic byte
 2. Perform OCR on file to produce companion text
 3. Query companion text for matches against a provided wordlist. Wordlist can contain keywords of interest based on use case (e.g. authentication token identifiers, regulated data markers, ...) 
 
 ## Future Improvements
 
-Make more better
+- Include support for alternative OCR formats, such as PDF
+- Better image differentiation (e.g., support for extension inclusions/exclusion lists, dictionary for magic response semantics,...)
+- Copy identified matches to directory path for export
+- Compile script with tesseract components bundled to run on target endpoints for remote analysis
 
 ## Install
 
