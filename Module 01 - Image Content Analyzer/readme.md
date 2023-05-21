@@ -2,7 +2,7 @@
 
 ## What?
 
-image_analyzer.py is a Python script which will query images within a given directory path for the presence of specified keywords.
+image_analyzer.py is a script which will query images within a given directory path for the presence of specified keywords. It requires Tesseract binary installation for OCR functionality.
 
 ## Why?
 
@@ -90,4 +90,4 @@ Thanks for trying image_analyzer!
 
 ## Demonstration
 
-link to video here
+![Video](https://youtu.be/CPG5C2W5Vlo)
