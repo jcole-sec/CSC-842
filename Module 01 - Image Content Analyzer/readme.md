@@ -30,6 +30,7 @@ This script leverages file magic bytes to identify images and OCR functionality 
 - [ ] Better image differentiation (e.g., support for extension inclusions/exclusion lists, dictionary for magic response semantics,...)
 - [ ] Copy identified matches to directory path for export
 - [ ] Compile script with tesseract components bundled to run on target endpoints for remote analysis
+- [ ] Utilize NLP to improve OCR results
 
 ## Install
 
