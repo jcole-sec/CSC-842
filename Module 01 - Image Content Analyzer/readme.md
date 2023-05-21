@@ -90,4 +90,4 @@ Thanks for trying image_analyzer!
 
 ## Demonstration
 
-![Video](https://youtu.be/CPG5C2W5Vlo)
+- Video: https://youtu.be/CPG5C2W5Vlo
