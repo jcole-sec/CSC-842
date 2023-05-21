@@ -44,7 +44,7 @@ def perform_ocr(image):
 
 
 def __main__():
-    parser = argparse.ArgumentParser(description='This script will ...')
+    parser = argparse.ArgumentParser(description='image_analyzer.py is a Python script which will query images within a given directory path for the presence of specified keywords.')
     parser.add_argument('-d','--directory', help='directory path to scan', type=str, default=os.getcwd())
     #parser.add_argument()
     args = parser.parse_args()

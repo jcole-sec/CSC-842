@@ -1,8 +1,12 @@
 # Module 01 - Image Content Analyzer
 
+## What?
+
+image_analyzer.py is a Python script which will query images within a given directory path for the presence of specified keywords.
+
 ## Why?
 
-Image files do not contain queryable text; requires manual analysis to review
+Image files do not contain queryable text and require manual analysis to review. Additionally, image files produced by various sources can have misleading or missing extensions. 
 
 Discovery Use Cases
 - [Offensive] Post-exploitation for sensitive content
@@ -10,6 +14,8 @@ Discovery Use Cases
 - [Defensive] Data Classification and Marking requirements
 
 ## How?
+
+This script leverages file magic bytes to identify images and OCR functionality to convert those images to text.
 
 ![Design](mod1_design.png)
 
@@ -20,12 +26,14 @@ Discovery Use Cases
 
 ## Future Improvements
 
-- Include support for alternative OCR formats, such as PDF
-- Better image differentiation (e.g., support for extension inclusions/exclusion lists, dictionary for magic response semantics,...)
-- Copy identified matches to directory path for export
-- Compile script with tesseract components bundled to run on target endpoints for remote analysis
+- [ ] Include support for alternative OCR formats, such as PDF
+- [ ] Better image differentiation (e.g., support for extension inclusions/exclusion lists, dictionary for magic response semantics,...)
+- [ ] Copy identified matches to directory path for export
+- [ ] Compile script with tesseract components bundled to run on target endpoints for remote analysis
 
 ## Install
+
+### Windows
 
 Install Python Magic for file magic-byte identification
 ```
