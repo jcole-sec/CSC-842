@@ -33,7 +33,7 @@ This script leverages file magic bytes to identify images and OCR functionality 
 
 ## Install
 
-### Windows
+### Windows Prerequisites
 
 #### Install Tesseract
 - download and run latest installer from https://digi.bib.uni-mannheim.de/tesseract/
@@ -48,9 +48,21 @@ Library resources:
 - `pytesseract` : Python wrapper for Tesseract OCR utility (ref: https://github.com/madmaze/pytesseract)
 
 
-### Linux 
+### Linux Prerequisites (*not tested*)
 
-to be tested
+#### Install Tesseract
+- follow documentation available at https://tesseract-ocr.github.io/tessdoc/Installation.html
+
+Ubuntu
+```
+sudo apt install tesseract-ocr
+sudo apt install libtesseract-dev
+```
+
+#### Install Python Libraries
+```
+pip3 install -r requirements.txt
+```
 
 ## Usage
 
