@@ -35,18 +35,22 @@ This script leverages file magic bytes to identify images and OCR functionality 
 
 ### Windows
 
-Install Python Magic for file magic-byte identification
+#### Install Tesseract
+- download and run latest installer from https://digi.bib.uni-mannheim.de/tesseract/
+
+#### Install Python Libraries
 ```
-pip3 install python-magic
-pip3 install python-magic-bin
+pip3 install -r requirements.txt
 ```
 
-Install Tesseract (Windows)
-- download latest installer from https://digi.bib.uni-mannheim.de/tesseract/
+Library resources:
+- `python-magic`: libmagic file identification library (ref: https://github.com/ahupp/python-magic)
+- `pytesseract` : Python wrapper for Tesseract OCR utility (ref: https://github.com/madmaze/pytesseract)
 
-```
-pip3  install pytesseract
-```
+
+### Linux 
+
+to be tested
 
 ## Usage
 
