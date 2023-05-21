@@ -13,9 +13,10 @@ Discovery Use Cases
 
 ![Design](mod1_design.png)
 
-1. Identify file type based on extension and/or magic byte
-2. Perform OCR on file to produce companion text
-3. Query companion text for matches against a provided wordlist. Wordlist can contain keywords of interest based on use case (e.g. authentication token identifiers, regulated data markers, ...) 
+1. Scan directory path to identify files.
+2. Identify file type based on extension and/or magic byte; Append to list if file is an image.
+3. Perform OCR on files in the image list to produce companion text.
+4. Query companion text for matches against a provided wordlist. Wordlist can contain keywords of interest based on use case (e.g. authentication token identifiers, regulated data markers, ...) 
 
 ## Future Improvements
 
