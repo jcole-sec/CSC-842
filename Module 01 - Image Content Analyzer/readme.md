@@ -70,7 +70,7 @@ help
 ```
 usage: image_analyzer.py [-h] [-d DIRECTORY] [-f FILE]
 
-image_analyzer.py is a Python script which will query images within a given directory path for the presence of specified keywords.
+image_analyzer.py is a script which will query images within a given directory path for the presence of specified keywords.
 
 options:
   -h, --help            show this help message and exit
