@@ -1,13 +1,17 @@
 import os
 import argparse
-
+from argparse import RawTextHelpFormatter
 from PIL import Image
 import pytesseract          # https://pypi.org/project/pytesseract/
 import numpy as np
 import magic                # python magic byte detection library
 
+
 def parse_keywords(keyword_file):
     """ Convert input file into list object """
+    with open(keyword_file, 'r') as f:
+        keywords = [str(x).lower().rstrip() for x in f.readlines()]
+    return keywords
 
 
 def get_images(srcdir):
@@ -38,18 +42,19 @@ def perform_ocr(image):
 
 
 def __main__():
-    parser = argparse.ArgumentParser(description='image_analyzer.py is a Python script which will query images within a given directory path for the presence of specified keywords.')
-    parser.add_argument('-d','--directory', help='directory path to scan', type=str, default=os.getcwd())
-    parser.add_argument('-f','--file', help='path to keyword list file. keyword list should contain one term per line.', type=str, default='keywords.txt')
-    
-    #parser.add_argument()
+    parser = argparse.ArgumentParser(
+        description ='image_analyzer.py is a Python script which will query images within a given directory path for the presence of specified keywords.',
+        formatter_class = RawTextHelpFormatter,
+        epilog = 'Thanks for trying image_analyzer!\n ',
+    )
+
+    parser.add_argument('-d','--directory', help='The directory path to scan.\nDefault value: [current directory]', type=str, default=os.getcwd())
+    parser.add_argument('-f','--file', help='The path to the keyword list file.\nThe keyword list file should contain one term per line.\nDefault value: [./keywords.txt]', type=str, default='keywords.txt')
     args = parser.parse_args()
 
-    srcdir = 'C:\\Users\\fjall\\Downloads'
-    keywords = parse_keywords(keyword_file)
-    
-    
-    image_list = get_images(srcdir)
+    keywords = parse_keywords(args.file)
+    image_list = get_images(args.directory)
+
     for image in image_list:
         try:
             image_text = perform_ocr(image)

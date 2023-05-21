@@ -66,7 +66,23 @@ pip3 install -r requirements.txt
 
 ## Usage
 
+help
+```
+usage: image_analyzer.py [-h] [-d DIRECTORY] [-f FILE]
 
+image_analyzer.py is a Python script which will query images within a given directory path for the presence of specified keywords.
+
+options:
+  -h, --help            show this help message and exit
+  -d DIRECTORY, --directory DIRECTORY
+                        The directory path to scan.
+                        Default value: [current directory]
+  -f FILE, --file FILE  The path to the keyword list file.
+                        The keyword list file should contain one term per line.
+                        Default value: [./keywords.txt]
+
+Thanks for trying image_analyzer!
+```
 
 ## Demonstration
 
