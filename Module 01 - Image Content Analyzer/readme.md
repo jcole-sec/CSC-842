@@ -17,7 +17,7 @@ Discovery Use Cases
 
 This script leverages file magic bytes to identify images and OCR functionality to convert those images to text.
 
-![Design](resources/module1_design.png)
+![Design](resources/mod1_design.png)
 
 1. Scan directory path to identify files.
 2. Identify file type based on extension and/or magic byte; Append to list if file is an image.
