@@ -2,4 +2,5 @@ numpy==1.24.3
 Pillow==9.5.0
 pytesseract==0.3.10
 python_magic==0.4.27
-python-magic-bin==0.4.14
+python-magic-bin==0.4.14; sys_platform == 'win32'
+python-magic-debian-bin==0.4.25; sys_platform == 'linux'
