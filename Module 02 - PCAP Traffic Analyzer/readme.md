@@ -11,16 +11,22 @@ This tool is meant to provide intelligence in available network packet data. The
 - To identify the presence of malicious connections within network traffic
 - To enumerate specific malware attributes associated with malicious connections
 
+The recursive pcap extraction may be useful where data is hosted on remote share (such as an Arkime or Zeek server) and folder contents hold more than just pcap files.
+
+Anticipated users include:
+- Security analysts for threat hunting activities
+- DFIR professionals for incident response investigations
+- Security and AppSec Engineers for traffic profiling
+
 ## How?
 
-
-OS walk to retrieve a list of pcaps
-Scapy's rdpcap
-Create an IP list from the connections
-Extract unique public IP addresses
-Use RIR data to provide IP enrichment data. The script leverages the RIPE API, which is capable of retrieving other RIR data (ARIN, LACNIC, etc.)
-Use ThreatFox data to identify and characterize malicious IPs
-Return data to user via a color-formated graph
+Script steps:
+- Use `os.walk()` to retrieve a list of pcaps recursively from a directory
+- Use Scapy's `rdpcap` function to parse source and destination IP address values and append to list for unique values
+- Use IPy's `iptype()` function to identify public IP addresses
+- Use RIR data to provide IP enrichment data. The script leverages the RIPE API, which is capable of retrieving other RIR data (ARIN, LACNIC, etc.)
+- Use ThreatFox's API to identify and characterize malicious IPs
+- Return enriched IP data to the user via a color-formated graph to aid in visual analysis
 
 Data returned includes:
 - Public IP Address
