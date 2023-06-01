@@ -5,9 +5,19 @@ from IPy import *       # https://github.com/autocracy/python-ipy/
 #import rich
 from rich.console import Console
 from rich.table import Table
+from rich.progress import track
+from rich import print as rprint
 
 
-pcap = 'samples/2023-03-24-IcedID.pcap' # https://www.malware-traffic-analysis.net/2023/03/24/index.html
+def get_pcaps(srcdir):
+    pcap_list = []
+    for r, d, f in os.walk(srcdir):
+        for each in f:
+            if each.endswith('pcap'):
+                srcfile = os.path.join(r, each)
+                pcap_list.append(srcfile)
+    return pcap_list
+
 
 def get_ips_from_pcap(pcap):
     packets = rdpcap(pcap)
@@ -74,76 +84,82 @@ def greynoise_lookup(ip):
 
 def __main__():
 
+    pcaps = get_pcaps('samples')
 
+    rprint(pcaps)
 
-    ip_list = get_ips_from_pcap(pcap)
-    public_ips = get_public_ips(ip_list)
-
-    table = Table(title=f'Public IPs from pcap: {pcap}')
-    table.add_column("IP", style="cyan", no_wrap=True)
-    table.add_column("Net Range", style="dim cyan")
-    table.add_column("Net Name", style="dim cyan")
-    table.add_column("Country", style="dim cyan")
-    table.add_column("Mal Score", style="red")
-    table.add_column("Mal Type", style="red")
-    table.add_column("Mal Alias", style="red")
-    #table.add_column("Status", justify="right", style="green")
-    for ip in public_ips:
-        ripe_data = ripe_lookup(ip)
-        
-        ip_addr = ripe_data['ip']
-        
-        # CIDR enum
-        try:
-            cidr = ripe_data['CIDR']
-        except KeyError:
-            cidr = ripe_data['inetnum']
-        except:
-            cidr = '-'
-        
-        # Network Name enum
-        try:
-            name = ripe_data['netname']
-        except KeyError:
-            name = ripe_data['NetName']
-        except:
-            name = '-'
-        
-        # Country enum
-        try:
-            country = ripe_data['country']
-        except KeyError:
-            country = ripe_data['Country']
-        except:
-            country = '-'
-        
-        tf_data = threatfox_lookup(ip)
-        tf_data = tf_data['data'][0]
-        
-        try:
-            mal_score = tf_data['confidence_level']
-        except:
-            mal_score = '-'
-        
-        try:
-            mal_type = tf_data['threat_type']
-        except:
-            mal_type = '-'
-        
-        try:
-            mal_alias = tf_data['malware_alias']
-        except:
-            mal_alias = '-'
+    for pcap in pcaps:
+        print(f'\n[*] Processing PCAP: {pcap}\n')
     
+        ip_list = get_ips_from_pcap(pcap)
+        public_ips = get_public_ips(ip_list)
+    
+        table = Table(title=f'Public IPs from pcap: {pcap}')
+        table.add_column("IP", style="cyan", no_wrap=True)
+        table.add_column("Net Range", style="dim cyan")
+        table.add_column("Net Name", style="dim cyan")
+        table.add_column("Country", style="dim cyan")
+        table.add_column("Mal Score", style="red")
+        table.add_column("Mal Type", style="red")
+        table.add_column("Mal Alias", style="red")
+        #table.add_column("Status", justify="right", style="green")
+        for ip in track(public_ips):
+            ripe_data = ripe_lookup(ip)
+            
+            ip_addr = ripe_data['ip']
+            
+            # CIDR enum
+            try:
+                cidr = ripe_data['CIDR']
+            except KeyError:
+                cidr = ripe_data['inetnum']
+            except:
+                cidr = '-'
+            
+            # Network Name enum
+            try:
+                name = ripe_data['netname']
+            except KeyError:
+                name = ripe_data['NetName']
+            except:
+                name = '-'
+            
+            # Country enum
+            try:
+                country = ripe_data['country']
+            except KeyError:
+                country = ripe_data['Country']
+            except:
+                country = '-'
+            
+            tf_data = threatfox_lookup(ip)
+            tf_data = tf_data['data'][0]
+            
+            try:
+                mal_score = tf_data['confidence_level']
+            except:
+                mal_score = '-'
+            
+            try:
+                mal_type = tf_data['threat_type']
+            except:
+                mal_type = '-'
+            
+            try:
+                mal_alias = tf_data['malware_alias']
+            except:
+                mal_alias = '-'
         
-        
-        table.add_row(ip_addr, cidr, name, country, str(mal_score), mal_type, mal_alias)
-    console = Console()
-
-    console.print("Danger, Will Robinson!", style="blink bold red underline on white")
-
-
-    console.print(table)
+            
+            
+            table.add_row(ip_addr, cidr, name, country, str(mal_score), mal_type, mal_alias)
+        console = Console()
+    
+        #console.print("Danger, Will Robinson!", style="blink bold red underline on white")
+    
+        print('')
+        console.print(table)
+        print('')
 
 
 __main__()
