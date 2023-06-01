@@ -1,3 +1,5 @@
+import argparse
+from argparse import RawTextHelpFormatter
 import requests
 import json
 from scapy.all import *
@@ -7,6 +9,22 @@ from rich.console import Console
 from rich.table import Table
 from rich.progress import track
 from rich import print as rprint
+
+
+def parseArguments():
+    
+    parser = argparse.ArgumentParser(
+        description='pcap_analyzer.py is a script that will:\n\
+    * recurse through a provided directory to identify pcaps,\n\
+    * extract unique public IPs,\n\
+    * and provide security intelligence via a user-friendly graph output.',
+        formatter_class=RawTextHelpFormatter,
+        epilog='Thanks for trying pcap_analyzer!\n ',
+    )
+
+    parser.add_argument('-d', '--directory', help='The directory path to scan.\nDefault value: [current directory]', type=str, default=os.getcwd())
+    
+    return parser.parse_args()
 
 
 def get_pcaps(srcdir):
@@ -88,8 +106,11 @@ def greynoise_lookup(ip):
 
 def __main__():
 
-    pcaps = get_pcaps('samples')
+    options = parseArguments()
 
+    pcaps = get_pcaps(options.directory)
+
+    print('[*] PCAPs found: ')
     rprint(pcaps)
 
     for pcap in pcaps:
