@@ -13,6 +13,7 @@ This tool is meant to provide intelligence in available network packet data. The
 
 ## How?
 
+
 OS walk to retrieve a list of pcaps
 Scapy's rdpcap
 Create an IP list from the connections
@@ -26,9 +27,13 @@ Data returned includes:
 - Network Range of associated IP (RIPE data)
 - Network name (RIPE data)
 - Country of IP registration (RIPE data)
-- A malware score based on Threatfox's confidence level (ref: https://threatfox.abuse.ch/api/)
+- A malware score based on Threatfox's confidence level (reference API documentation link below for details)
 - Threatfox's malware type classification (e.g., `botnet_cc`, `payload_delivery`, ...)
 - Threatfox's malware alias or common name (e.g., `Bokbot`, `CobaltStrike`, ...)
+
+### API references
+- [RIPE Whois API](https://stat.ripe.net/docs/02.data-api/whois.html)
+- [Threatfox API](https://threatfox.abuse.ch/api)
 
 ## Future Improvements
 

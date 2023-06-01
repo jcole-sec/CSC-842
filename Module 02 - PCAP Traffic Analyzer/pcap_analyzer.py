@@ -10,6 +10,7 @@ from rich import print as rprint
 
 
 def get_pcaps(srcdir):
+    """ Returns list of pcap files recursively identified from supplied directory """
     pcap_list = []
     for r, d, f in os.walk(srcdir):
         for each in f:
@@ -20,6 +21,7 @@ def get_pcaps(srcdir):
 
 
 def get_ips_from_pcap(pcap):
+    """ Returns a list of unique IPs from pcap packets """
     packets = rdpcap(pcap)
     ip_list = set([])
     for packet in packets:
@@ -30,6 +32,7 @@ def get_ips_from_pcap(pcap):
     return ip_list
 
 def get_public_ips(ip_list):
+    """ Returns a list of public ips (e.g., non-RFC1918, loopback, linklocal, ...) from a supplied ip list """
     public_ips = []
     for ip in ip_list:
         try:
@@ -42,6 +45,7 @@ def get_public_ips(ip_list):
 
 
 def threatfox_lookup(ip):
+    """ Performs ThreatFox IP Lookup for a supplied IP address """
     url = 'https://threatfox-api.abuse.ch/api/v1/'
     data = {}
     data["query"] = "search_ioc"
@@ -54,7 +58,7 @@ def threatfox_lookup(ip):
 
 
 def ripe_lookup(ip):
-    """ Perform RIPE Stat lookup against IP and return dictionary """
+    """ Performs a RIPE Stat API lookup against a supplied IP and returns a response dictionary """
     url = f'https://stat.ripe.net/data/whois/data.json?resource={ip}'
     r = requests.get(url)
     ip_data = {}
