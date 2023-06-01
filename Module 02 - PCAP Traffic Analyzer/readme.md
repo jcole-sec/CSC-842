@@ -51,7 +51,20 @@ pip3 install -r requirements.txt
 
 
 ```
-usage: i
+usage: pcap_analyzer.py [-h] [-d DIRECTORY]
+
+pcap_analyzer.py is a script that will:
+    * recurse through a provided directory to identify pcaps,
+    * extract unique public IPs,
+    * and provide security intelligence via a user-friendly graph output.
+
+options:
+  -h, --help            show this help message and exit
+  -d DIRECTORY, --directory DIRECTORY
+                        The directory path to scan.
+                        Default value: [current directory]
+
+Thanks for trying pcap_analyzer!
 ```
 
 ## Demonstration
