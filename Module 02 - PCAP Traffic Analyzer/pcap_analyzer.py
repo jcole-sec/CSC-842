@@ -4,7 +4,6 @@ import requests
 import json
 from scapy.all import *
 from IPy import *       # https://github.com/autocracy/python-ipy/
-#import rich
 from rich.console import Console
 from rich.table import Table
 from rich.progress import track
@@ -106,9 +105,9 @@ def greynoise_lookup(ip):
 
 def __main__():
 
-    options = parseArguments()
+    args = parseArguments()
 
-    pcaps = get_pcaps(options.directory)
+    pcaps = get_pcaps(args.directory)
 
     print('[*] PCAPs found: ')
     rprint(pcaps)
@@ -118,7 +117,8 @@ def __main__():
     
         ip_list = get_ips_from_pcap(pcap)
         public_ips = get_public_ips(ip_list)
-    
+
+        # Rich table configution settings   
         table = Table(title=f'Public IPs from pcap: {pcap}')
         table.add_column("IP", style="cyan", no_wrap=True)
         table.add_column("Net Range", style="dim cyan")
@@ -127,13 +127,13 @@ def __main__():
         table.add_column("Mal Score", style="red")
         table.add_column("Mal Type", style="red")
         table.add_column("Mal Alias", style="red")
-        #table.add_column("Status", justify="right", style="green")
+
         for ip in track(public_ips):
             ripe_data = ripe_lookup(ip)
             
             ip_addr = ripe_data['ip']
             
-            # CIDR enum
+            # CIDR enumeration
             try:
                 cidr = ripe_data['CIDR']
             except KeyError:
@@ -141,7 +141,7 @@ def __main__():
             except:
                 cidr = '-'
             
-            # Network Name enum
+            # Network Name enumeration
             try:
                 name = ripe_data['netname']
             except KeyError:
@@ -149,7 +149,7 @@ def __main__():
             except:
                 name = '-'
             
-            # Country enum
+            # Country enumeration
             try:
                 country = ripe_data['country']
             except KeyError:
@@ -157,6 +157,7 @@ def __main__():
             except:
                 country = '-'
             
+            # ThreatFox Malware enumeration
             tf_data = threatfox_lookup(ip)
             tf_data = tf_data['data'][0]
             
@@ -179,9 +180,7 @@ def __main__():
             
             table.add_row(ip_addr, cidr, name, country, str(mal_score), mal_type, mal_alias)
         console = Console()
-    
-        #console.print("Danger, Will Robinson!", style="blink bold red underline on white")
-    
+        
         print('')
         console.print(table)
         print('')
