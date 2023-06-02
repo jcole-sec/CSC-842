@@ -75,6 +75,9 @@ Thanks for trying pcap_analyzer!
 
 ## Demonstration
 
+![Screenshot](assets/pcap_analyzer_demo.png)
+
 Sample pcaps from [malware-traffic-analysis.net](https://www.malware-traffic-analysis.net/2023/) are available within the `samples/` directory of this repository.
 
-- Video: 
+
+ ### Video: 
