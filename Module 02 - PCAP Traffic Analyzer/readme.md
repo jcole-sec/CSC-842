@@ -44,7 +44,7 @@ Data returned includes:
 ## Future Improvements
 
 - [ ] Include support for live data capture via Scapy (real-time monitoring). 
-- [ ] Additional IP data enrichments
+- [ ] Additional IP data enrichments (_Greynoise API function included, but not implemented as it relies on registration for key_)
 - [ ] Add counters and directionality (source or destination)
 
 ## Install
@@ -67,7 +67,7 @@ pcap_analyzer.py is a script that will:
 options:
   -h, --help            show this help message and exit
   -d DIRECTORY, --directory DIRECTORY
-                        The directory path to scan.
+                        The directory path to scan for pcap files.
                         Default value: [current directory]
 
 Thanks for trying pcap_analyzer!

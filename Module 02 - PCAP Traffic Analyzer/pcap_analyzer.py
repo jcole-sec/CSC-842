@@ -21,7 +21,12 @@ def parseArguments():
         epilog='Thanks for trying pcap_analyzer!\n ',
     )
 
-    parser.add_argument('-d', '--directory', help='The directory path to scan.\nDefault value: [current directory]', type=str, default=os.getcwd())
+    parser.add_argument(
+        '-d', '--directory', 
+        help='The directory path to scan for pcap files.\nDefault value: [current directory]', 
+        type=str, 
+        default=os.getcwd()
+    )
     
     return parser.parse_args()
 
@@ -47,6 +52,7 @@ def get_ips_from_pcap(pcap):
         src_ip = packet.sprintf("%IP.src%")
         ip_list.add(src_ip)
     return ip_list
+
 
 def get_public_ips(ip_list):
     """ Returns a list of public ips (e.g., non-RFC1918, loopback, linklocal, ...) from a supplied ip list """
@@ -88,7 +94,7 @@ def ripe_lookup(ip):
     else:
         print(f'[*] Request Error: {r.status_code}')
 
-
+'''
 def greynoise_lookup(ip):
     url = f'https://api.greynoise.io/v3/community/{ip}' # https://docs.greynoise.io/reference/get_v3-community-ip
     headers = {}
@@ -101,7 +107,7 @@ def greynoise_lookup(ip):
         return  r
     else:
         print(f'[*] Request Error: {r.status_code}')
-
+'''
 
 def __main__():
 
