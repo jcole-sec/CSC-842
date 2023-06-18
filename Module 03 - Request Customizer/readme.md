@@ -2,16 +2,19 @@
 
 ## What?
 
+request_obfuscator.py attempts to obfuscate a web request to a specified URL or URL list.
+
+The script will:
+- Connect a VPN using the specified  configuration,
+- Execute the web request using a modified header,
+- Exit the VPN session.
 
 
 ## Why?
 
-request_obfuscator.py attempts to obfuscate a web request to a specified URL or URL list.
+Allows offensive security practioners to potentially evade security mechanisms, such as network and web application firewall IP blocks, geo-restrictions, and request header fields.
 
-The script will:
-    * connect a VPN using the specified  configuration,
-    * execute the web request using a modified header,
-    * exit the VPN session.
+Allows defensive security practiioners to test and validate the same security mechanisms and controls.
 
 ## How?
 
@@ -19,13 +22,14 @@ The script will:
 
 
 ### API references
-- myip.com is used to return the current IP address and country of the requestor's origin. API documentation is here: [docs](https://www.myip.com/api-docs/)
+- myip.com is used to return the current IP address and country of the requestor's origin. 
+- myip.com API documentation is here: [docs](https://www.myip.com/api-docs/)
 
 ## Future Improvements
 
 - [ ] Include support for Wireguard and Tailscale VPNs
 - [ ] Include additional header and request manipulation options, such as with scapy
-- [ ] 
+- [ ] Include ...
 
 ## Install
 
@@ -36,8 +40,11 @@ pip3 install -r requirements.txt
 ### Linux host configuration
 
 The script reqires sudo access to setup the VPN tunnel.
+
 To prevent the need to input credentials, ensure the executing user has passwordless sudo access configured.
+
 Typically, this can be accomplished by adding the following to the `/etc/sudoers` file:
+
 ```
 user    ALL=(ALL) NOPASSWD:ALL
 ```
@@ -45,7 +52,9 @@ user    ALL=(ALL) NOPASSWD:ALL
 
 ### OpenVPN configuration
 The directory `./openvpn` is the default location to load configuration file(s).
+
 In each OpenVPN configuration file, add the following parameter: `auth-user-pass login.conf`
+
 The referenced `login.conf` should be in the root directory and store your VPN credentials as follows:
 
 ```
