@@ -1,3 +1,4 @@
+from argparse import ArgumentParser, RawTextHelpFormatter
 import subprocess
 #from subprocess import Popen, PIPE
 import os
@@ -7,20 +8,52 @@ from fake_useragent import UserAgent
 
 def parseArguments():
     
-    parser = argparse.ArgumentParser(
-        description='pcap_analyzer.py is a script that will:\n\
-    * recurse through a provided directory to identify pcaps,\n\
-    * extract unique public IPs,\n\
-    * and provide security intelligence via a user-friendly graph output.',
+    parser = ArgumentParser(
+        description='request_obfuscator.py attempts to obfuscate a web request to a specified URL or URL list.\n\
+\nthe script will:\n\
+    * connect a VPN using the specified configuration,\n\
+    * execute the web request using a modified header,\n\
+    * exit the VPN session.\n',
         formatter_class=RawTextHelpFormatter,
-        epilog='Thanks for trying pcap_analyzer!\n ',
+        epilog='Reference source at https://github.com/jcole-sec/CSC-842/tree/main/Module%2003%20-%20Request%20Customizer\n ',
+    )
+
+    url_input = parser.add_mutually_exclusive_group(required=True)
+
+    url_input.add_argument(
+        '-u', '--url',
+        help='specify a URL to request.\n\
+[ note: either --url or --file is required] \n\
+    ', 
+        type=str, 
+        default=os.getcwd()
+    )
+
+    url_input.add_argument(
+        '-f', '--file',
+        help='specify a file containing a list of URLs.\n\
+the file should contain a URL per line.\n\
+[ note: either --url or --file is required ]\n\
+    ', 
+        type=str, 
+        default=os.getcwd()
     )
 
     parser.add_argument(
-        '-d', '--directory', 
-        help='The directory path to scan for pcap files.\nDefault value: [current directory]', 
+        '-c', '--config',  
+        help='specify an OpenVPN configuration file.\n\
+if option is not provided, will default to --directory option and default\n\
+    ', 
         type=str, 
         default=os.getcwd()
+    )
+
+    parser.add_argument(
+        '--d', '--directory', 
+        help='the directory path to check for OpenVPN configuration files.\n\
+default value: [./openvpn]', 
+        type=str, 
+        default=os.path.join(os.getcwd(), './openvpn')
     )
     
     return parser.parse_args()
@@ -63,34 +96,41 @@ url = 'https://api.myip.com'
 openvpn_conf = '/home/user/code/CSC-842/Module 03 - Request Customizer/openvpn/node-is-02.protonvpn.net.udp.ovpn'
 
 
-openvpn_handle = openvpn_connection(openvpn_conf)
+def __main__():
 
-while True:
-    output = openvpn_handle.stdout.readline()
-    if output:
-        #print (output.strip().decode())
-        if "Initialization Sequence Completed" in str(output):
-            print('[+] VPN session connected')
+    args = parseArguments()
 
-            header = header_randomizer()
-            print(f'[*] Header used: {header}')
-            
-            ip, country = get_network_detail()
-            print(f'[*] Current IP: {ip}')
-            print(f'[*] Current Country: {country}')
+    openvpn_handle = openvpn_connection(openvpn_conf)
+    
+    while True:
+        output = openvpn_handle.stdout.readline()
+        if output:
+            #print (output.strip().decode())
+            if "Initialization Sequence Completed" in str(output):
+                print('[+] VPN session connected')
+    
+                header = header_randomizer()
+                print(f'[*] Header used: {header}')
+                
+                ip, country = get_network_detail()
+                print(f'[*] Current IP: {ip}')
+                print(f'[*] Current Country: {country}')
+    
+                #url = 'https://explore.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes'
+                #r = requests.get(url, headers = header)
+                #print(r.json())
+                #print(r.content.decode())
+                
+                try:
+                    #openvpn_handle.kill()         # sends SIGKILL, doesn't kill openvpn connection
+                    #openvpn_handle.terminate()    # sends SIGTERM; note: it will not work with shell=True; doesn't kill openvpn connection
+                    #os.killpg(os.getpgid(openvpn_handle.pid), signal.SIGTERM) # found here: https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true/4791612#4791612
+                    os.system('sudo killall openvpn')
+                    print('[+] VPN session closed')
+                    break
+                except Exception as e:
+                    print(e)
+                    break
 
-            #url = 'https://explore.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes'
-            #r = requests.get(url, headers = header)
-            #print(r.json())
-            #print(r.content.decode())
-            
-            try:
-                #openvpn_handle.kill()         # sends SIGKILL, doesn't kill openvpn connection
-                #openvpn_handle.terminate()    # sends SIGTERM; note: it will not work with shell=True; doesn't kill openvpn connection
-                #os.killpg(os.getpgid(openvpn_handle.pid), signal.SIGTERM) # found here: https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true/4791612#4791612
-                os.system('sudo killall openvpn')
-                print('[+] VPN session closed')
-                break
-            except Exception as e:
-                print(e)
-                break
+
+__main__()
