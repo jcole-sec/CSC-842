@@ -99,7 +99,7 @@ Reference source at https://github.com/jcole-sec/CSC-842/tree/main/Module%2003%2
 
 ## Demonstration
 
-![Screenshot](./assets.demo-request_obfuscator.py.png)
+![Screenshot](assets.demo-request_obfuscator.py.png)
 
 ### Video: 
 
