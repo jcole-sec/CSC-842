@@ -1,4 +1,4 @@
-# Module 03 - Web Request Customizer
+# Module 03 - Web Request Obfuscator
 
 ## What?
 
