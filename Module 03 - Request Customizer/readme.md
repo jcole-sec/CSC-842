@@ -66,12 +66,12 @@ password
 
 
 ```
-usage: request_obfuscator.py [-h] (-u URL | -f FILE) [-c CONFIG] [--d D]
+usage: request_obfuscator.py [-h] (-u URL | -f FILE) [-c CONFIG] [--d D] [--debug | --no-debug]
 
 request_obfuscator.py attempts to obfuscate a web request to a specified URL or URL list.
 
 the script will:
-    * connect a VPN using the specified  configuration,
+    * connect a VPN using the specified configuration,
     * execute the web request using a modified header,
     * exit the VPN session.
 
@@ -90,13 +90,16 @@ options:
                             
   --d D, --directory D  the directory path to check for OpenVPN configuration files.
                         default value: [./openvpn]
+                            
+  --debug, --no-debug   Enable debugging output to the console.
+                         (default: False)
 
 Reference source at https://github.com/jcole-sec/CSC-842/tree/main/Module%2003%20-%20Request%20Customizer
 ```
 
 ## Demonstration
 
-
+![Screenshot](./assets.demo-request_obfuscator.py.png)
 
 ### Video: 
 

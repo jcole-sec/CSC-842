@@ -130,15 +130,22 @@ def process_request(url, debug):
         request_log['status_code'] = r.status_code
 
         if r.status_code == 200:
+            
+            request_log['response_header'] = str(r.headers)
+
+            if debug:
+                print('[-] Request Response Header:')
+                print(r.headers)
+            
             try:
                 if r.json():
-                    print('[-] Request Response (json):')
+                    print('[-] Request Response: json')
                     request_log['body'] = r.json()
                     if debug:
                         print(r.json())
                     print('')
             except:
-                print('[-] Request Response (content):')
+                print('[-] Request Response: content')
                 request_log['body'] = r.content.decode()
                 if debug:
                     print(r.content.decode()+'\n')
@@ -157,6 +164,7 @@ def write_to_log(request_log):
 
 
 def call_logger(request_log, ip, country, debug):
+    """ Combines log dictionary and provides exception handling for logger """
     try:
         request_log['vpn_ip'] = ip
         request_log['vpn_country'] = country
@@ -166,6 +174,7 @@ def call_logger(request_log, ip, country, debug):
         print('[x] Request logging failed')
         if debug:
             print(e)
+
 
 def __main__():
 
@@ -211,7 +220,6 @@ def __main__():
                             request_log = process_request(url, debug)
                             call_logger(request_log, ip, country, debug)
                             print('')
-
 
 
                 try:
