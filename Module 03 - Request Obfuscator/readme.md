@@ -13,9 +13,14 @@ The script will:
 
 ## Why?
 
-Allows offensive security practioners to potentially evade security mechanisms, such as network and web application firewall IP blocks, geo-restrictions, and request header fields.
+Web traffic can be analyzed for fingerprinting origin by correlating network artifacts, such as source IP address and request header parameters, to unify data. 
 
-Allows defensive security practiioners to test and validate the same security mechanisms and controls.
+This script attempts to reduce those artifacts or make such correlation more difficulty by introducing a layer of obfuscation through VPN and header modification.
+
+Sample use cases:
+- Allows offensive security practioners to potentially evade security mechanisms, such as network and web application firewall IP blocks, geo-restrictions, and request header fields.
+- Allows defensive security practiioners to test and validate the same security mechanisms and controls.
+
 
 ## How?
 
