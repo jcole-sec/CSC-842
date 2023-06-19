@@ -3,3 +3,4 @@
 
 # openvpn auth
 */login.conf
+*/request-obfuscator_log-*.json
