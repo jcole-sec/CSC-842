@@ -137,7 +137,7 @@ Script in execution:
 ![Screenshot](assets/demo-request_obfuscator-1.png)
 
 
-Resultant log file:
+Sample log file:
 ![Screenshot](assets/demo-request_obfuscator-2.png)
 
 ### Video: 
