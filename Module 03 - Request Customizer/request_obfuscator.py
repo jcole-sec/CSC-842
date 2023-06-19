@@ -1,10 +1,15 @@
-from argparse import ArgumentParser, RawTextHelpFormatter
+#!/usr/bin/python3
+
+from argparse import ArgumentParser, BooleanOptionalAction, RawTextHelpFormatter
 import subprocess
-#from subprocess import Popen, PIPE
 import os
+from pathlib import Path
 import requests
 from fake_useragent import UserAgent
-
+from rich import print
+import random
+from time import strftime
+import json
 
 def parseArguments():
     
@@ -25,8 +30,7 @@ def parseArguments():
         help='specify a URL to request.\n\
 [ note: either --url or --file is required] \n\
     ', 
-        type=str, 
-        default=os.getcwd()
+        type=str
     )
 
     url_input.add_argument(
@@ -35,8 +39,7 @@ def parseArguments():
 the file should contain a URL per line.\n\
 [ note: either --url or --file is required ]\n\
     ', 
-        type=str, 
-        default=os.getcwd()
+        type=str
     )
 
     parser.add_argument(
@@ -44,18 +47,26 @@ the file should contain a URL per line.\n\
         help='specify an OpenVPN configuration file.\n\
 if option is not provided, will default to --directory option and default\n\
     ', 
-        type=str, 
-        default=os.getcwd()
+        type=str
     )
 
     parser.add_argument(
         '--d', '--directory', 
         help='the directory path to check for OpenVPN configuration files.\n\
-default value: [./openvpn]', 
+default value: [./openvpn]\n\
+    ', 
         type=str, 
-        default=os.path.join(os.getcwd(), './openvpn')
+        default='./openvpn'
     )
-    
+
+    parser.add_argument(
+        '--debug', 
+        help='Enable debugging output to the console.\n', 
+        action=BooleanOptionalAction, 
+        default=False
+    )    
+    #parser.set_defaults(text=False)
+
     return parser.parse_args()
 
 
@@ -83,6 +94,16 @@ def openvpn_connection(openvpn_conf):
         print(e)
 
 
+def get_random_configuration(dir):
+    """ Generates a list from conf files within a directory and returns a random conf """
+    config_list = []
+    for r,d,f in os.walk(dir):
+        for filename in f:
+            if filename.endswith('ovpn'):
+                config_list.append(os.path.abspath(os.path.join(r, filename)))
+    return random.choice(config_list)
+
+
 def get_network_detail():
     """ Returns IP and Country detail from myip.com """
     r = requests.get('https://api.myip.com').json()
@@ -90,43 +111,117 @@ def get_network_detail():
     country = r['country']
     return ip, country
 
+def process_request(url, debug):
+    """ Executes a request for a given url using a randomized user-agent and prints the details """
+    
+    request_log = {}
+    print('[dim cyan][+] Request Detail:[/dim cyan]')    
 
-# vars
-url = 'https://api.myip.com'
-openvpn_conf = '/home/user/code/CSC-842/Module 03 - Request Customizer/openvpn/node-is-02.protonvpn.net.udp.ovpn'
+    print(f'[-] Request URL: {url}')
+    request_log['url'] = url
 
+    header = header_randomizer()
+    print(f'[-] User-Agent: {header["User-Agent"]}')
+    request_log['user_agent'] = header["User-Agent"]
+
+    try:
+        r = requests.get(url, headers = header)
+        print(f'[-] Request Status: {r.status_code}')
+        request_log['status_code'] = r.status_code
+
+        if r.status_code == 200:
+            try:
+                if r.json():
+                    print('[-] Request Response (json):')
+                    request_log['body'] = r.json()
+                    if debug:
+                        print(r.json())
+                    print('')
+            except:
+                print('[-] Request Response (content):')
+                request_log['body'] = r.content.decode()
+                if debug:
+                    print(r.content.decode()+'\n')
+                print('')
+    except:
+        print('[x] URL processing error encountered')
+    return request_log
+
+
+def write_to_log(request_log):
+    """ Writes input dictionary to log file """
+    datetime = strftime('%Y%m%d_%H%M%S')
+    log_name = f'request-obfuscator_log-{datetime}.json'
+    with open(log_name, 'a') as logfile:
+        logfile.write(json.dumps(request_log))
+
+
+def call_logger(request_log, ip, country, debug):
+    try:
+        request_log['vpn_ip'] = ip
+        request_log['vpn_country'] = country
+        write_to_log(request_log)
+
+    except Exception as e:
+        print('[x] Request logging failed')
+        if debug:
+            print(e)
 
 def __main__():
 
-    args = parseArguments()
+    options = parseArguments()
 
+    debug = options.debug
+
+    if options.config:
+        openvpn_conf = Path(options.config)
+    else:
+        conf_dir = Path(options.d).resolve()
+        print(f'[*] VPN configuration directory: {conf_dir}')
+        openvpn_conf = get_random_configuration(conf_dir)
+    
+    print(f'[*] OpenVPN config file: {openvpn_conf}')
     openvpn_handle = openvpn_connection(openvpn_conf)
     
     while True:
         output = openvpn_handle.stdout.readline()
         if output:
-            #print (output.strip().decode())
+            if debug:
+                print (output.strip().decode())
             if "Initialization Sequence Completed" in str(output):
-                print('[+] VPN session connected')
-    
-                header = header_randomizer()
-                print(f'[*] Header used: {header}')
-                
+                print('\n[dim pale_turquoise4][*] ----- VPN session connected ----- [/dim pale_turquoise4]\n') # ref rich colors: https://rich.readthedocs.io/en/latest/appendix/colors.html?highlight=colors#standard-colors
+        
+                print('[dim pale_turquoise4][+] Connection Detail:[/dim pale_turquoise4]')    
                 ip, country = get_network_detail()
-                print(f'[*] Current IP: {ip}')
-                print(f'[*] Current Country: {country}')
-    
-                #url = 'https://explore.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes'
-                #r = requests.get(url, headers = header)
-                #print(r.json())
-                #print(r.content.decode())
-                
+                print(f'[dim pale_turquoise4][-] VPN IP: {ip}[/dim pale_turquoise4]')
+                print(f'[dim pale_turquoise4][-] VPN Country: {country}[/dim pale_turquoise4]\n')
+
+                if options.url:
+                    url = options.url
+                    request_log = process_request(url, debug)
+                    call_logger(request_log, ip, country, debug)
+                    print('')
+                                
+                elif options.file:
+                    url_list = Path(options.file).resolve() # get full path
+                    print(f'[*] Loading URLs from supplied list: {url_list}\n')
+                    with open(str(url_list)) as urls:
+                        urls = urls.read().splitlines()
+                        for url in urls:
+                            request_log = process_request(url, debug)
+                            call_logger(request_log, ip, country, debug)
+                            print('')
+
+
+
                 try:
-                    #openvpn_handle.kill()         # sends SIGKILL, doesn't kill openvpn connection
-                    #openvpn_handle.terminate()    # sends SIGTERM; note: it will not work with shell=True; doesn't kill openvpn connection
-                    #os.killpg(os.getpgid(openvpn_handle.pid), signal.SIGTERM) # found here: https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true/4791612#4791612
+                    #openvpn_handle.kill()         #  --> sends SIGKILL, doesn't kill openvpn connection
+                    #openvpn_handle.terminate()    # s--> ends SIGTERM; note: it will not work with shell=True; doesn't kill openvpn connection
+                    #os.killpg(os.getpgid(openvpn_handle.pid), signal.SIGTERM) \
+                    # found here, not successful: https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true/4791612#4791612
+                   
                     os.system('sudo killall openvpn')
-                    print('[+] VPN session closed')
+                    print('[dim pale_turquoise4][*] ----- VPN session closed ----- [/dim pale_turquoise4]\n')
                     break
                 except Exception as e:
                     print(e)

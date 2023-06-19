@@ -1,0 +1,3 @@
+https://api.myip.com
+https://share.ialab.dsu.edu/
+https://explore.whatismybrowser.com/useragents/parse/?analyse-my-user-agent=yes
