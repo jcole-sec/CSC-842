@@ -4,12 +4,14 @@ from argparse import ArgumentParser, BooleanOptionalAction, RawTextHelpFormatter
 import subprocess
 import os
 from pathlib import Path
-import requests
-from fake_useragent import UserAgent
-from rich import print
 import random
 from time import strftime
 import json
+
+import requests
+from fake_useragent import UserAgent
+from rich import print
+
 
 def parseArguments():
     
