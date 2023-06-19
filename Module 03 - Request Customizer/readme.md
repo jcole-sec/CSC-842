@@ -7,6 +7,7 @@ request_obfuscator.py attempts to obfuscate a web request to a specified URL or 
 The script will:
 - Connect a VPN using the specified  configuration,
 - Execute the web request using a modified header,
+- Log the response along with request parameters,
 - Exit the VPN session.
 
 
@@ -18,8 +19,27 @@ Allows defensive security practiioners to test and validate the same security me
 
 ## How?
 
+The script begins by establishing a VPN connection.
 
+The script either accepts a specified OpenVPN configuration file (`--config`) or will find configuration files from a specified directory (`--directory`) and connect to a random one.
 
+Once the VPN is connected, all subsequent web requests are made through this connection. 
+
+For the web request(s), the script accepts a URL (`--url`) or a URL list (`--file`) with a URL per line.
+
+The web requests are made with a randomly generated user-agent to replace the default python requests library version. 
+
+The details of the request are logged to a unique JSON file per request made. 
+
+The following fields are included in the log:
+- Request URL
+- Request User-Agent used 
+- Response status code
+- Response header
+- Response body (attempts json, if not available, logs content)
+- VPN IP and Country used
+
+Once the requests are made, the script kills the OpenVPN session
 
 ### API references
 - myip.com is used to return the current IP address and country of the requestor's origin. 
@@ -29,17 +49,20 @@ Allows defensive security practiioners to test and validate the same security me
 
 - [ ] Include support for Wireguard and Tailscale VPNs
 - [ ] Include additional header and request manipulation options, such as with scapy
-- [ ] Include ...
+- [ ] Improve response parser to handle various response formats (e.g., XML, HTML, ...)
+- [ ] Improve request parameter options available (e.g., different ops such as POST or PUT, ...)
+- [ ] Configure web proxy selection (limited access to proxy pool during initial build) 
 
 ## Install
 
+### Python Dependencies
 ```
 pip3 install -r requirements.txt
 ```
 
 ### Linux host configuration
 
-The script reqires sudo access to setup the VPN tunnel.
+The script requires sudo access to setup the VPN tunnel.
 
 To prevent the need to input credentials, ensure the executing user has passwordless sudo access configured.
 
@@ -51,9 +74,19 @@ user    ALL=(ALL) NOPASSWD:ALL
 
 
 ### OpenVPN configuration
-The directory `./openvpn` is the default location to load configuration file(s).
+An OpenVPN client will need to be installed. On Ubuntu, this can be accomplished with:
+```
+sudo apt-get install openvpn
+```
+
+The repo directory `./openvpn` is the default location to load configuration file(s).
 
 In each OpenVPN configuration file, add the following parameter: `auth-user-pass login.conf`
+
+If the available configuration files are loaded into the default repo directory, the following command can be used for find and replace:
+```
+find ./openvpn/ -type f -exec sed -i 's/auth-user-pass login.conf/auth-user-pass login.conf/g' {} +
+```
 
 The referenced `login.conf` should be in the root directory and store your VPN credentials as follows:
 
@@ -61,6 +94,7 @@ The referenced `login.conf` should be in the root directory and store your VPN c
 username
 password
 ```
+
 
 ## Usage
 
@@ -99,7 +133,12 @@ Reference source at https://github.com/jcole-sec/CSC-842/tree/main/Module%2003%2
 
 ## Demonstration
 
-![Screenshot](assets/demo-request_obfuscator.py.png)
+Script in execution:
+![Screenshot](assets/demo-request_obfuscator-1.png)
+
+
+Resultant log file:
+![Screenshot](assets/demo-request_obfuscator-2.png)
 
 ### Video: 
 

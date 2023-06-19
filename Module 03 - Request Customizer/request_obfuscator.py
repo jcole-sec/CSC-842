@@ -131,7 +131,10 @@ def process_request(url, debug):
 
         if r.status_code == 200:
             
-            request_log['response_header'] = str(r.headers)
+            request_log['response_header'] = {}
+            #request_log['response_header'] = str(r.headers)
+            for k,v in r.headers.items():
+             request_log['response_header'][k] = v
 
             if debug:
                 print('[-] Request Response Header:')
@@ -166,8 +169,9 @@ def write_to_log(request_log):
 def call_logger(request_log, ip, country, debug):
     """ Combines log dictionary and provides exception handling for logger """
     try:
-        request_log['vpn_ip'] = ip
-        request_log['vpn_country'] = country
+        request_log['vpn'] = {}
+        request_log['vpn']['ip'] = ip
+        request_log['vpn']['country'] = country
         write_to_log(request_log)
 
     except Exception as e:
