@@ -1,4 +1,4 @@
 IPy==1.1
 Requests==2.31.0
-rich==13.3.5
+rich==13.4.2
 scapy==2.5.0
