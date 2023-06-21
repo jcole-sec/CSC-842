@@ -22,7 +22,7 @@ def parseArguments():
     * execute the web request using a modified header,\n\
     * exit the VPN session.\n',
         formatter_class=RawTextHelpFormatter,
-        epilog='Reference source at https://github.com/jcole-sec/CSC-842/tree/main/Module%2003%20-%20Request%20Customizer\n ',
+        epilog='Reference source at https://github.com/jcole-sec/CSC-842/tree/main/Module%2003%20-%20Request%20Obfuscator\n ',
     )
 
     url_input = parser.add_mutually_exclusive_group(required=True)

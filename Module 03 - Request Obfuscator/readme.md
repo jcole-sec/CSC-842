@@ -133,7 +133,7 @@ options:
   --debug, --no-debug   Enable debugging output to the console.
                          (default: False)
 
-Reference source at https://github.com/jcole-sec/CSC-842/tree/main/Module%2003%20-%20Request%20Customizer
+Reference source at https://github.com/jcole-sec/CSC-842/tree/main/Module%2003%20-%20Request%20Obfuscator
 ```
 
 ## Demonstration
