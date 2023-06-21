@@ -156,7 +156,7 @@ def process_request(url, debug):
                     print(r.content.decode()+'\n')
                 print('')
     except:
-        print('[x] URL processing error encountered')
+        print('[*] URL processing error encountered')
     return request_log
 
 
