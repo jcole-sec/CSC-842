@@ -147,4 +147,4 @@ Sample log file:
 
 ### Video: 
 
- - [Demo Video](https://youtu.be/...)
+ - [Demo Video](https://youtu.be/LQL9j-KE810)
