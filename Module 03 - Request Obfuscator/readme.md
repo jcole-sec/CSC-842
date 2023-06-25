@@ -90,7 +90,7 @@ In each OpenVPN configuration file, add the following parameter: `auth-user-pass
 
 If the available configuration files are loaded into the default repo directory, the following command can be used for find and replace:
 ```
-find ./openvpn/ -type f -exec sed -i 's/auth-user-pass login.conf/auth-user-pass login.conf/g' {} +
+find ./openvpn/ -type f -exec sed -i 's/auth-user-pass/auth-user-pass login.conf/g' {} +
 ```
 
 The referenced `login.conf` should be in the root directory and store your VPN credentials as follows:
