@@ -1,0 +1,19 @@
+# virtual environments
+env
+venv
+
+# output logs
+netproc_*.csv
+netproc_*.tsv
+netproc_*.json
+netproc_*.ndjson
+
+# build artifacts
+build
+dist
+
+# vscode
+.vs
+
+# dev
+test
