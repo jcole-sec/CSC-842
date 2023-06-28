@@ -1,9 +1,9 @@
-#!/usr/bin/env python
  
 import socket
 from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM
 import time
 from pathlib import Path
+import hashlib
 from argparse import ArgumentParser, BooleanOptionalAction, RawTextHelpFormatter
 
 # non-standard libs
@@ -80,6 +80,20 @@ def parseArguments():
         default=False
     )
     return parser.parse_args()
+
+
+def get_sha256(filename):
+    
+    """ Calculate the SHA-256 hash for specified file """
+    
+    h = hashlib.sha256()
+
+    with open(filename,'rb') as file:
+        chunk = 0
+        while chunk != b'':
+            chunk = file.read(1024)
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def get_process_attributes(c :psutil._common.sconn, debug :bool):
@@ -172,6 +186,12 @@ def get_process_attributes(c :psutil._common.sconn, debug :bool):
         pdata['cmdline'] = ' '.join(str(each) for each in psutil.Process(c.pid).cmdline())
     except:
         pdata['cmdline'] = blank
+    
+    # Process SHA-256 hash
+    try:
+        pdata['phash'] = get_sha256(psutil.Process(c.pid).exe())
+    except:
+        pdata['phash'] = blank   
 
     return pdata
 
@@ -202,14 +222,14 @@ def write_tsv(outfile_prefix :str, pdata_list :list):
     outfilename = outfile_prefix + '.tsv'
     with open(outfilename, 'at') as outfile:
 
-        headers = ['Proto', 'Local IP', 'Local Host', 'Local Port', 'Remote address','Remote host', 'Remote Port','Status','PID','Process name','PPID','PPID Name','User','Path','Command Line']
+        headers = ['Proto', 'Local IP', 'Local Host', 'Local Port', 'Remote address','Remote host', 'Remote Port','Status','PID','Process name','PPID','PPID Name','User','Path','SHA-256','Command Line']
         outfile.write('\t'.join(map(str,headers)) + '\n')
 
         for pdata in pdata_list:
             try:
                 outfile.write(f"{pdata['proto']}\t{pdata['lip']}\t{pdata['lhost']}\t{pdata['lport']}\t{pdata['rip']}\t{pdata['rhost']}\t\
                               {pdata['rport']}\t{pdata['status']}\t{pdata['pid']}\t{pdata['pname']}\t{str(pdata['ppid'])}\t{pdata['ppid_name']}\t\
-                                {pdata['puser']}\t{pdata['ppath']}\t{pdata['cmdline']}\n")        
+                                {pdata['puser']}\t{pdata['ppath']}\t{pdata['phash']}\t{pdata['cmdline']}\n")        
             except:
                 outfile.write(f"{pdata['proto']}\t{pdata['lip']}\t{pdata['lhost']}\t{pdata['lport']}\t{pdata['rip']}\t{pdata['rhost']}\t\
                               {pdata['rport']}\t{pdata['status']}\t{pdata['pid']}\t-\t-\t-\t-\t-\t-\n")

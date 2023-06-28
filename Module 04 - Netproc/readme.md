@@ -65,7 +65,7 @@ The build process produces a [spec file](https://github.com/jcole-sec/CSC-842/bl
 
 Build command:
 ```
-pyinstaller.exe --onefile --windowed --icon=assets/Kyo-Tux-Delikate-Network.ico netproc.py
+pyinstaller.exe --onefile --icon=assets/Kyo-Tux-Delikate-Network.ico netproc.py
 ```
 - _Note: the included icon under assets was retrieved from [icon archive](https://www.iconarchive.com/show/delikate-icons-by-kyo-tux/network-icon.html) and is marked restricted for personal use only_
 
