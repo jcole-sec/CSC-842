@@ -2,14 +2,14 @@
 
 ## What?
 
-Netproc is python-based tool used to identify network socket connection in use by Windows processes. 
+Netproc is python-based tool used to identify network socket connections in use by Windows processes. 
 
 It is meant to function similar to the Windows `netstat -naob` command or `lsof -i` on Linux with expanded enrichment and logging features.
 
 
 ## Why?
 
-This tool is primararily intended for defensive amd situational awareness purposes.
+This tool is primarily intended for defensive and situational awareness purposes to enumerate what network activities are being executed by system processes.
 
 Some example use cases include:
 - Forensic review for rogue or unintended process identification
@@ -28,7 +28,7 @@ Netproc captures the following data:
 - SHA-256 hash of the process binary
 
 Netproc also provides the following options:
-- Log file creation with tab-separate value (tsv) and/or JSON output formating
+- Log file creation with tab-separate value (tsv) and/or JSON output formatting
 - Display summarized data to the console with a formatted table output.
 - Filter data output for processes with connections to or from public IPs.
 
@@ -45,12 +45,12 @@ Netproc also provides the following options:
 
 ### Install Python Libraries
 
-Install for script only
+Install for script only:
 ```
 pip3 install -r requirements.txt
 ```
 
-Install for executable build
+Install for executable build:
 ```
 pip3 install -r requirements.txt
 ```
@@ -60,14 +60,14 @@ pip3 install -r requirements.txt
 
 The executable is compiled using PyInstaller, which can be installed via the pip requirements file above. 
 
-The build process produces a spec file which can be used to tailor future builds to meet usage or tooling needs.
+The build process produces a [spec file](https://github.com/jcole-sec/CSC-842/blob/main/Module%2004%20-%20Netproc/netproc.spec) that can be used to tailor future builds to meet usage or tooling needs.
 
 
 Build command:
 ```
 pyinstaller.exe --onefile --windowed --icon=assets/Kyo-Tux-Delikate-Network.ico netproc.py
 ```
-- _Note: the included icon under assets was retrieved from [icon archive](https://www.iconarchive.com/show/delikate-icons-by-kyo-tux/network-icon.html) and is marked retricted for personal use only_
+- _Note: the included icon under assets was retrieved from [icon archive](https://www.iconarchive.com/show/delikate-icons-by-kyo-tux/network-icon.html) and is marked restricted for personal use only_
 
 ## Usage
 
