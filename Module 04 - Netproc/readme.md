@@ -104,4 +104,13 @@ For support, contact https://github.com/jcole-sec.
 
 ## Demonstration
 
+- Command with display output:
+```
+python .\netproc.py -d --no-tsv -p
+```
+![screenshot](assets/demo-netproc-1.png)
+
+Video:
+
+
 - Video: https://youtu.be/...
