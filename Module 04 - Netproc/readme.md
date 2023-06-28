@@ -69,6 +69,7 @@ pyinstaller.exe --onefile --icon=assets/Kyo-Tux-Delikate-Network.ico netproc.py
 ```
 - _Note: the included icon under assets was retrieved from [icon archive](https://www.iconarchive.com/show/delikate-icons-by-kyo-tux/network-icon.html) and is marked restricted for personal use only_
 
+
 ## Usage
 
 help
@@ -112,5 +113,4 @@ python .\netproc.py -d --no-tsv -p
 
 Video:
 
-
-- Video: https://youtu.be/...
+- Video: https://youtu.be/3B3JWWuPkoU
