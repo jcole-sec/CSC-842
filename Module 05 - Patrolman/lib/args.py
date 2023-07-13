@@ -14,7 +14,7 @@ def parse_arguments():
 
     parser.add_argument(
         '-j', '--json', 
-        help='Enable output logging to a new-line delimited JSON file.\nFile will be written to netproc_hostname_YYYYmmDD.HHMM.json\n\
+        help='Enable output logging to a new-line delimited JSON file.\nFile will be written to patrolman_hostname_YYYYmmDD.HHMM.json\n\
     ', 
         action=BooleanOptionalAction,
         default=True
@@ -22,7 +22,7 @@ def parse_arguments():
 
     parser.add_argument(
         '-t', '--tsv', 
-        help='Enable output logging to a tab-separated value (TSV) file.\nFile will be written to netproc_hostname_YYYYmmDD.HHMM.tsv\n\
+        help='Enable output logging to a tab-separated value (TSV) file.\nFile will be written to patrolman_hostname_YYYYmmDD.HHMM.tsv\n\
     ', 
         action=BooleanOptionalAction,
         default=False
