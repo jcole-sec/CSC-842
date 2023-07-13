@@ -47,9 +47,6 @@ The CTI enrichment function will then perform a similar ThreatFox lookup for the
 
 Tool output is default set to JSON, but can support TSV and condensed console output as well.
 
-...
-
-
 ## Future Improvements
 
 - [ ] Allow service or daemon mode for continual execution and logging
