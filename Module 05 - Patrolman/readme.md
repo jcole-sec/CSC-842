@@ -97,9 +97,9 @@ Run as administrator (required for additional data, such as user enumeration for
 
 - Command with display output:
 ```
-python .\netproc.py -d --no-tsv -p
+python .\patrolman.exe -d --test
 ```
-![screenshot](assets/demo-netproc-1.png)
+![screenshot](assets/demo-patrolman-1.png)
 
 Video:
 
