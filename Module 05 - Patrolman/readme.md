@@ -87,7 +87,34 @@ Run as administrator (required for additional data, such as user enumeration for
 
 
 ```
+usage: patrolman.exe [-h] [-j | --json | --no-json] [-t | --tsv | --no-tsv] [-d | --display | --no-display] [-p | --public | --no-public] [--debug | --no-debug] [--test | --no-test]
 
+about:
+    Patrolman enumerates running processes and identifies associated data attributes, including execution path and arguments, binary hash, and network connection details.
+    Patrolman then attempts to identify malicious indicators by analyzing behavioral abnormalities and checking observable indicators for Cyber Threat Intelligence (CTI) pattern matches.
+    
+
+options:
+  -h, --help            show this help message and exit
+  -j, --json, --no-json
+                        Enable output logging to a new-line delimited JSON file.
+                        File will be written to netproc_hostname_YYYYmmDD.HHMM.json
+
+  -t, --tsv, --no-tsv   Enable output logging to a tab-separated value (TSV) file.
+                        File will be written to netproc_hostname_YYYYmmDD.HHMM.tsv
+
+  -d, --display, --no-display
+                        Enable table display for process details.
+
+  -p, --public, --no-public
+                        Filter for processes with connections to or from public IPs.
+
+  --debug, --no-debug   Enable additional console output for debugging purposes.
+
+  --test, --no-test     Inject simulated malicious process indicators for testing and validation purposes.
+
+
+For support, contact https://github.com/jcole-sec.
 ```
 
 ## Demonstration
