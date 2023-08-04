@@ -22,7 +22,7 @@ Some example use cases include:
 
 ## How?
 
-Similar to Netproc, Patrolman leverages primary the socket and psutil libraries to enumerate loaded processes and derive data attributes.
+Like Netproc, Patrolman primarily leverages the socket and psutil libraries to enumerate loaded processes and derive data attributes.
 
 These data attributes include:
 - process name
@@ -35,13 +35,13 @@ These data attributes include:
 - process user
 - parent process name and id
 
-Patrolman uses some of this data to then run 'hunt evil' and threat intelligence lookup functions.
+Patrolman uses some of this data to run 'hunt evil' and threat intelligence lookup functions.
 
-The 'Hunt Evil' function leverages detection logic outline in the SANS DFIR poster available [here](https://www.sans.org/posters/hunt-evil/). Primarily this checks for irregulaties in either the process' path, user, or parent process.
+The 'Hunt Evil' function leverages the detection logic outline in the SANS DFIR poster available [here](https://www.sans.org/posters/hunt-evil/). Primarily this checks for irregularities in either the process' path, user, or parent process.
 
-The CTI enrichment function checks to determine if the process is communicating with a public remote IP. If it is, it performs the following actions:
+The CTI enrichment function checks to determine if the process communicates with a public remote IP. If it is, it performs the following actions:
 - Executes a RIPE API lookup to append the remote network name and country of registry
-- Executes a ThreatFox remote IP lookup to appends a threat confidence level, malware common name, and threat type if a match is present
+- Executes a ThreatFox remote IP lookup to append a threat confidence level, malware common name, and threat type if a match is present
 
 The CTI enrichment function will then perform a similar ThreatFox lookup for the process hash to retrieve the same data (regardless of socket condition).
 
@@ -98,10 +98,10 @@ options:
   -h, --help            show this help message and exit
   -j, --json, --no-json
                         Enable output logging to a new-line delimited JSON file.
-                        File will be written to netproc_hostname_YYYYmmDD.HHMM.json
+                        File will be written to patrolman_hostname_YYYYmmDD.HHMM.json
 
   -t, --tsv, --no-tsv   Enable output logging to a tab-separated value (TSV) file.
-                        File will be written to netproc_hostname_YYYYmmDD.HHMM.tsv
+                        File will be written to patrolman_hostname_YYYYmmDD.HHMM.tsv
 
   -d, --display, --no-display
                         Enable table display for process details.
