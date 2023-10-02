@@ -13,4 +13,4 @@ pyinstaller-hooks-contrib==2023.5
 pywin32-ctypes==0.2.2
 requests==2.31.0
 rich==13.4.2
-urllib3==2.0.3
+urllib3==2.0.6
